@@ -12,14 +12,14 @@ contract ERC1155 is IERC1155, IERC1155MetadataURI {
     using SafeMath for uint256;
     using Address for address;
 
+    // id => creators
+    mapping (uint256 => address) public creators;
     // Mapping from token ID to account balances
     mapping(uint256 => mapping(address => uint256)) private _balances;
 
     // Mapping from account to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
-    // Used as the URI for all token types by relying on ID substition,
-    // e.g. https://token-cdn-domain/{id}.json
-    string private _uri;
+    
     /**
         @dev Get the specified address' balance for token with specified ID.
         Attempting to query the zero account for a balance will result in a revert.
@@ -269,9 +269,16 @@ contract ERC1155 is IERC1155, IERC1155MetadataURI {
             data
         );
     }
-
+    modifier creatorOnly(uint256 _id) {
+        require(creators[_id] == msg.sender,
+        "is not the creator");
+        _;
+    }
+    function setURI(string calldata _uri, uint256 _id) external creatorOnly(_id) {
+        emit URI(_uri, _id);
+    }
     function uri(uint256) external view override returns (string memory) {
-        return "didnt know what to do with this";
+        return "";
     }
 //oz
     function _doSafeTransferAcceptanceCheck(
@@ -296,6 +303,7 @@ contract ERC1155 is IERC1155, IERC1155MetadataURI {
         }
     }
 //oz
+
     function _doSafeBatchTransferAcceptanceCheck(
         address operator,
         address from,
