@@ -1,0 +1,19 @@
+{
+  "contracts": {},
+  "solidityLibs": {},
+  "proxies": {
+    "erc1155/ERC1155": [
+      {
+        "address": "0x4211eD22D4471ADaF1c268F093B14809507b5f75",
+        "kind": "NonProxy",
+        "bytecodeHash": "cf92c2394e8c2f28e3af421c18162839885ab683d840bc30bc52e4a5d59d830a"
+      },
+      {
+        "address": "0xF47d2153F7BFBe4BaD6d3a1bE7052CB4b4Dfd4bb",
+        "kind": "NonProxy",
+        "bytecodeHash": "7028ebee597ca2e0169533bffac9bb651ad3b534fdc2907fa07fa7f8a792ab2b"
+      }
+    ]
+  },
+  "manifestVersion": "2.2"
+}
