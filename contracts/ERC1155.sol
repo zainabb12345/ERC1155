@@ -19,7 +19,10 @@ contract ERC1155 is IERC1155, IERC1155MetadataURI {
 
     // Mapping from account to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
-    
+     
+    // Used as the URI for all token types by relying on ID substition, e.g. https://token-cdn-domain/{id}.json
+
+    mapping(uint256 => string) private _uri;
     /**
         @dev Get the specified address' balance for token with specified ID.
         Attempting to query the zero account for a balance will result in a revert.
@@ -27,7 +30,7 @@ contract ERC1155 is IERC1155, IERC1155MetadataURI {
         @param id ID of the token
         @return The account's balance of the token type requested
      */
-
+    
     function balanceOf(address account, uint256 id)
         public
         view
@@ -274,11 +277,12 @@ contract ERC1155 is IERC1155, IERC1155MetadataURI {
         "is not the creator");
         _;
     }
-    function setURI(string calldata _uri, uint256 _id) external creatorOnly(_id) {
-        emit URI(_uri, _id);
+    function setURI(string calldata _Uri, uint256 _id) external creatorOnly(_id) {
+        _uri[_id] = _Uri;
     }
-    function uri(uint256) external view override returns (string memory) {
-        return "";
+   
+    function uri(uint256 id) external view override returns (string memory) {
+        return _uri[id];
     }
 //oz
     function _doSafeTransferAcceptanceCheck(
